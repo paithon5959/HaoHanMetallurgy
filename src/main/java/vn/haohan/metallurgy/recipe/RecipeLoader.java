@@ -116,6 +116,11 @@ public class RecipeLoader {
         return recipesById.size();
     }
 
+    /** Snapshot of every loaded machine recipe for integrations and guides. */
+    public List<MetallurgyRecipe> all() {
+        return List.copyOf(recipesById.values());
+    }
+
     // ── Internal ───────────────────────────────────────────────
 
     private MetallurgyRecipe parseFile(File file) throws IOException {

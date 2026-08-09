@@ -1,5 +1,11 @@
 package vn.haohan.metallurgy.recipe;
 
+import vn.haohan.itemcore.api.HaoHanItemCore;
+import vn.haohan.itemcore.api.recipe.Ingredient;
+import vn.haohan.itemcore.api.recipe.ItemResult;
+import vn.haohan.itemcore.api.recipe.RecipeDefinition;
+import vn.haohan.itemcore.api.recipe.RecipeType;
+import vn.haohan.itemcore.api.recipe.ShapedRecipeDefinition;
 import vn.haohan.metallurgy.HaoHanMetallurgy;
 import vn.haohan.metallurgy.item.CustomItem;
 import org.bukkit.Keyed;
@@ -23,6 +29,7 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.recipe.CraftingBookCategory;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -50,6 +57,7 @@ public class CraftingRecipeManager implements Listener {
 
     private final HaoHanMetallurgy plugin;
     private final Set<NamespacedKey> recipeKeys = new LinkedHashSet<>();
+    private final Set<String> browserRecipeIds = new LinkedHashSet<>();
 
     public CraftingRecipeManager(HaoHanMetallurgy plugin) {
         this.plugin = plugin;
@@ -57,6 +65,7 @@ public class CraftingRecipeManager implements Listener {
 
     public void registerAll() {
         recipeKeys.clear();
+        unregisterBrowserRecipes();
         registerMithrilCompression();
         registerBoraxGrinding();
         registerBowDrill();
@@ -64,7 +73,112 @@ public class CraftingRecipeManager implements Listener {
         registerCharcoalBlockUnpacking();
         registerAlloyPickaxes();
         registerSlagPickaxes();
+        registerBrowserRecipes();
         discoverRecipesForOnlinePlayers();
+    }
+
+    /**
+     * Publishes the crafting recipes to ItemCore's browser catalog.  Bukkit's
+     * recipe book and ItemCore's recipe viewer are separate registries, so
+     * registering only a Bukkit recipe is not enough for right-click lookup.
+     */
+    private void registerBrowserRecipes() {
+        registerBrowser(new RecipeDefinition("haohanmetallurgy:mithril_ingot_to_shards",
+                RecipeType.SHAPELESS,
+                java.util.List.of(item(CustomItem.MITHRIL_INGOT)),
+                result(CustomItem.MITHRIL_SHARD, 9)));
+        registerBrowser(new ShapedRecipeDefinition("haohanmetallurgy:mithril_shards_to_ingot",
+                java.util.List.of("SSS", "SSS", "SSS"),
+                java.util.Map.of('S', item(CustomItem.MITHRIL_SHARD)),
+                result(CustomItem.MITHRIL_INGOT, 1)));
+        registerBrowser(new RecipeDefinition("haohanmetallurgy:raw_borax_to_powder",
+                RecipeType.SHAPELESS,
+                java.util.List.of(item(CustomItem.RAW_BORAX)),
+                result(CustomItem.BORAX_POWDER, 1)));
+        registerBrowser(new RecipeDefinition("haohanmetallurgy:bow_drill",
+                RecipeType.SHAPELESS,
+                java.util.List.of(material(Material.STICK, 2), item(CustomItem.JUTE_CORD)),
+                result(CustomItem.BOW_DRILL, 1)));
+        registerBrowser(new RecipeDefinition("haohanmetallurgy:charcoal_block_to_charcoal",
+                RecipeType.SHAPELESS,
+                java.util.List.of(item(CustomItem.CHARCOAL_BLOCK)),
+                new ItemResult("minecraft:charcoal", 9)));
+        registerBrowser(new ShapedRecipeDefinition("haohanmetallurgy:charcoal_to_charcoal_block",
+                java.util.List.of("CCC", "CCC", "CCC"),
+                java.util.Map.of('C', material(Material.CHARCOAL)),
+                result(CustomItem.CHARCOAL_BLOCK, 1)));
+
+        registerPickaxeBrowserRecipe(CustomItem.EMBERSTEEL_PICKAXE, CustomItem.EMBERSTEEL_INGOT);
+        registerPickaxeBrowserRecipe(CustomItem.MITHRIL_PICKAXE, CustomItem.MITHRIL_INGOT);
+        registerPickaxeBrowserRecipe(CustomItem.SOULSTEEL_PICKAXE, CustomItem.SOULSTEEL_INGOT);
+        for (Map.Entry<String, CustomItem> entry : PICKAXE_INGREDIENTS.entrySet()) {
+            CustomItem result = CustomItem.getById(entry.getKey()).orElse(null);
+            if (result != null && entry.getKey().endsWith("_slag_pickaxe")) {
+                registerPickaxeBrowserRecipe(result, entry.getValue());
+            }
+        }
+    }
+
+    private void registerPickaxeBrowserRecipe(CustomItem result, CustomItem ingredient) {
+        registerBrowser(new ShapedRecipeDefinition("haohanmetallurgy:" + result.getId(),
+                java.util.List.of("III", " T ", " T "),
+                java.util.Map.of('I', item(ingredient), 'T', material(Material.STICK)),
+                result(result, 1)));
+    }
+
+    private Ingredient.ItemIngredient item(CustomItem item) {
+        return new Ingredient.ItemIngredient("haohanmetallurgy:" + item.getId());
+    }
+
+    private Ingredient.MaterialIngredient material(Material material) {
+        return new Ingredient.MaterialIngredient(material);
+    }
+
+    private Ingredient.MaterialIngredient material(Material material, int amount) {
+        return new Ingredient.MaterialIngredient(material, amount);
+    }
+
+    private ItemResult result(CustomItem item, int amount) {
+        return new ItemResult("haohanmetallurgy:" + item.getId(), amount);
+    }
+
+    private void registerBrowser(RecipeDefinition recipe) {
+        var registry = HaoHanItemCore.get().getRecipeRegistry();
+        if (!registry.exists(recipe.getId())) {
+            registry.register(recipe);
+        }
+        browserRecipeIds.add(recipe.getId());
+    }
+
+    /** Publishes Metallurgy machine recipes as read-only entries in Browser. */
+    public void registerMachineBrowserRecipes(RecipeLoader loader) {
+        for (MetallurgyRecipe recipe : loader.all()) {
+            List<Ingredient> ingredients = new java.util.ArrayList<>();
+            for (MetallurgyRecipe.Ingredient input : recipe.getInputs()) {
+                if (input.customItemId() != null && !input.customItemId().isBlank()) {
+                    ingredients.add(new Ingredient.ItemIngredient(
+                            "haohanmetallurgy:" + input.customItemId(), input.amount()));
+                } else {
+                    ingredients.add(new Ingredient.MaterialIngredient(input.material(), input.amount()));
+                }
+            }
+
+            MetallurgyRecipe.OutputItem output = recipe.getOutput();
+            String outputId = output.customItemId() != null && !output.customItemId().isBlank()
+                    ? "haohanmetallurgy:" + output.customItemId()
+                    : "minecraft:" + output.material().name().toLowerCase(java.util.Locale.ROOT);
+            registerBrowser(new RecipeDefinition(
+                    "haohanmetallurgy:" + recipe.getId().replace(':', '_'),
+                    RecipeType.MACHINE,
+                    ingredients,
+                    new ItemResult(outputId, output.amount())));
+        }
+    }
+
+    private void unregisterBrowserRecipes() {
+        var registry = HaoHanItemCore.get().getRecipeRegistry();
+        browserRecipeIds.forEach(registry::unregister);
+        browserRecipeIds.clear();
     }
 
     private void registerMithrilCompression() {
@@ -401,8 +515,8 @@ public class CraftingRecipeManager implements Listener {
         return new NamespacedKey(plugin, name);
     }
 
-    private RecipeChoice.ExactChoice exact(ItemStack item) {
-        return new RecipeChoice.ExactChoice(item);
+    private RecipeChoice.MaterialChoice exact(ItemStack item) {
+        return new RecipeChoice.MaterialChoice(java.util.List.of(item.getType()));
     }
 
     private void addRecipe(Recipe recipe) {

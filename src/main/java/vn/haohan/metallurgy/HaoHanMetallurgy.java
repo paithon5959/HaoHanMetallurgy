@@ -86,6 +86,7 @@ public final class HaoHanMetallurgy extends JavaPlugin {
         // 3. Recipe Loader
         recipeLoader = new RecipeLoader(this);
         recipeLoader.loadAll();
+        craftingRecipeManager.registerMachineBrowserRecipes(recipeLoader);
 
         // 4. Machine Manager
         machineManager = new MachineManager(this);
