@@ -36,6 +36,7 @@ final class MetallurgyItemRegistry {
                     .displayName(item.getDisplayName())
                     .lore(item.getLore())
                     .model("minecraft:" + item.getMaterial().name().toLowerCase(java.util.Locale.ROOT))
+                    .maxStackSize(item.getMaterial().name().endsWith("PICKAXE") ? 1 : 64)
                     .type(item.getMaterial().name().endsWith("PICKAXE") ? ItemType.TOOL : ItemType.MATERIAL)
                     // ItemCore retains the gameplay metadata and identity. ItemManager applies
                     // localized text and the configured gameplay stats to each generated stack.
