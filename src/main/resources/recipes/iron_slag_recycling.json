@@ -1,5 +1,5 @@
 {
-  "_schema_version": 4,
+  "_schema_version": 6,
   "id": "ancient_forge/iron_slag_recycling",
   "machine_type": "ANCIENT_FORGE",
   "inputs": [
@@ -16,7 +16,8 @@
   "max_temperature": 1800,
   "fail_chance": 0.25,
   "underheat_fail_chance": 0.95,
-  "additives": ["FLINT", "QUARTZ"],
-  "additive_amount": 1,
-  "additive_clean_output_bonus": 0.25
+  "fluxes": [
+    { "material": "FLINT", "amount": 1, "clean_output_bonus": 0.25 },
+    { "material": "QUARTZ", "amount": 1, "clean_output_bonus": 0.25 }
+  ]
 }

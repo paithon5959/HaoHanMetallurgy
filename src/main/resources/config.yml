@@ -3,10 +3,40 @@
 # Mọi giá trị gameplay đều ở đây. Không hardcode trong code.
 # ============================================================
 
-config-version: 4
+config-version: 11
+
+# Ngôn ngữ hiển thị: vi hoặc en
+language: vi
 
 # ── Debug ────────────────────────────────────────────────────
 debug: false
+
+# Cắt các loại cỏ/dương xỉ bằng flint có cơ hội nhận dây đay.
+# Cây cao có tỷ lệ tốt hơn và có thể rơi 2 dây.
+jute:
+  drops:
+    SHORT_GRASS:
+      chance: 0.18
+      min-amount: 1
+      max-amount: 1
+    FERN:
+      chance: 0.20
+      min-amount: 1
+      max-amount: 1
+    TALL_GRASS:
+      chance: 0.30
+      min-amount: 1
+      max-amount: 2
+    LARGE_FERN:
+      chance: 0.32
+      min-amount: 1
+      max-amount: 2
+
+# Một khúc gỗ được bọc mud ở 4 mặt ngang và mặt đáy sẽ thành khối than gỗ.
+charcoal-kiln:
+  # Phải giữ chuột phải liên tục; giá trị thực tế được giới hạn trong khoảng 3-5 giây.
+  ignition-seconds: 4.0
+  duration-seconds: 120
 
 # ── Tick Engine ───────────────────────────────────────────────
 # Máy chạy mỗi bao nhiêu ticks (20 ticks = 1 giây)
@@ -16,8 +46,8 @@ tick-rate: 20
 machines:
   # Khoảng cách tối đa để player mở GUI máy (blocks)
   interaction-range: 5
-  # Hệ số nhân tốc độ tiến trình nấu recipe (ví dụ: 1.0 = tốc độ thực tế của recipe, 5.0 = nhanh gấp 5 lần)
-  time-speed-multiplier: 1.0
+  # Hệ số nhân tốc độ tiến trình nấu recipe (0.8 = chậm hơn 20%, 1.0 = tốc độ gốc)
+  time-speed-multiplier: 0.8
 
 # ── GUI ───────────────────────────────────────────────────────
 gui:
@@ -82,6 +112,11 @@ temperature:
   fall-per-tick: 1
   # Nhiệt độ tối đa (°C)
   max: 2100
+  # Manual bellows: heat added by one interaction.
+  bellows-boost: 40
+  # Piston bellows: heat and recipe ticks added by one piston stroke.
+  piston-bellows-boost: 30
+  piston-progress-ticks: 5
   # Tổ hợp không khai báo riêng nhận thêm một lượng nhiệt nhỏ từ buồng đốt thứ hai.
   combination-bonus: 75
 
@@ -126,48 +161,48 @@ temperature:
 
 # ── Phụ phẩm / Chất trợ dung (Additives / Flux) ───────────────
 additives:
-  # Danh sách phụ phẩm mặc định dùng cho các công thức cơ bản
-  default-list:
-    - "BONE_MEAL"
-    - "SAND"
-    - "RED_SAND"
-    - "CLAY_BALL"
-    - "FLINT"
-  # Tỷ lệ thất bại (ra sỉ) khi không có phụ phẩm phù hợp hỗ trợ
-  no-additive-fail-chance: 0.55
-  # Điểm phần trăm được cộng thẳng vào xác suất ra quặng sạch khi có trợ dung.
-  default-clean-output-bonus: 0.20
+  # Chỉ Borax Powder (custom item borax_powder) mới được nhận là flux.
+  borax-per-batch: 1
+  # Có bột Borax: 95% kim loại sạch, 5% sỉ.
+  clean-output-chance-with-borax: 0.95
+  # Không có flux: 8% kim loại sạch, 92% sỉ.
+  clean-output-chance-without-borax: 0.08
+
+# Furnace và Blast Furnace vanilla không có ô flux. Chúng nung chậm
+# như cấu hình hiện tại và có 10% cơ hội cho kim loại sạch.
+vanilla-furnaces:
+  clean-output-chance: 0.10
 
 
 # ── Progression ───────────────────────────────────────────────
 progression:
-  # Các block đại diện cho quặng luyện kim trong thế giới
-  ores:
-    # Mặc định dùng COPPER_ORE làm Ember Ore
-    ember-ore: "COPPER_ORE"
-    # Mặc định dùng LAPIS_ORE làm Soul Ore
-    soul-ore: "LAPIS_ORE"
-    # Mặc định dùng EMERALD_ORE làm Mithril Ore (quặng mới)
-    mithril-ore: "EMERALD_ORE"
-  
+  # Hiện Action Bar/chat khi cúp không đủ cấp. Creative luôn bỏ qua cảnh báo này.
+  show-mining-warnings: true
+  # Độ cứng mô phỏng của quặng custom dùng NoteBlock state dành riêng.
+  # Cúp và Efficiency hoạt động như quặng đá; rìu không còn được bonus tốc độ gỗ.
+  # Mithril mặc định chậm hơn Obsidian (hardness 50).
+  custom-ore-hardness:
+    borax: 3.0
+    deepslate-borax: 4.5
+    mithril: 55.0
+    deepslate-mithril: 65.0
   # Chuỗi cúp: Iron < EmberSteel < Diamond < Mithril < SoulSteel < Netherite.
   # 1: Wooden, 2: Stone/Gold, 3: Copper, 4: Iron, 5: EmberSteel,
   # 6: Diamond, 7: Mithril, 8: SoulSteel, 9: Netherite.
   mining-requirements:
     "minecraft:stone": 1
-    "minecraft:coal_ore": 1
-    "minecraft:deepslate_coal_ore": 1
+    "minecraft:coal_ore": 3
+    "minecraft:deepslate_coal_ore": 3
     "minecraft:copper_ore": 2
     "minecraft:deepslate_copper_ore": 2
     "minecraft:raw_copper_block": 2
     "minecraft:iron_ore": 2
     "minecraft:deepslate_iron_ore": 2
     "minecraft:raw_iron_block": 2
-    "ember_ore": 4
     "minecraft:diamond_ore": 5
     "minecraft:deepslate_diamond_ore": 5
-    "mithril-ore": 6
-    "soul_ore": 6
+    "minecraft:lapis_ore": 3
+    "minecraft:deepslate_lapis_ore": 3
     "minecraft:obsidian": 7
     "minecraft:crying_obsidian": 7
     "minecraft:ancient_debris": 8
@@ -177,7 +212,7 @@ progression:
     WOODEN_PICKAXE: 1
     STONE_PICKAXE: 2
     GOLDEN_PICKAXE: 2
-    COPPER_PICKAXE: 4
+    COPPER_PICKAXE: 3
     IRON_PICKAXE: 4
     DIAMOND_PICKAXE: 6
     NETHERITE_PICKAXE: 9
@@ -185,6 +220,13 @@ progression:
   # Thong so cho item plugin. Item van co the dung texture/model vanilla,
   # nhung tier, durability va attribute duoc gan khi plugin tao item.
   custom-item-stats:
+    bow_drill:
+      tier: 0
+      max-damage: 5
+      attack-damage: 0.0
+      attack-speed: 0.0
+      mining-efficiency: 0.0
+      block-break-speed: 0.0
     copper_slag_pickaxe:
       tier: 3
       max-damage: 95
@@ -229,38 +271,38 @@ progression:
       block-break-speed: 0.0
     soulsteel_slag_pickaxe:
       tier: 7
-      max-damage: 850
-      attack-damage: 3.0
-      attack-speed: -2.8
-      mining-efficiency: 5.0
-      block-break-speed: 0.0
-    soulsteel_pickaxe:
-      tier: 8
-      max-damage: 1420
-      attack-damage: 4.0
-      attack-speed: -2.8
-      mining-efficiency: 6.0
-      block-break-speed: 0.0
-    netherite_slag_pickaxe:
-      tier: 7
       max-damage: 1200
       attack-damage: 3.0
       attack-speed: -2.8
       mining-efficiency: 7.0
+      block-break-speed: 0.0
+    soulsteel_pickaxe:
+      tier: 8
+      max-damage: 2200
+      attack-damage: 4.0
+      attack-speed: -2.8
+      mining-efficiency: 9.5
+      block-break-speed: 0.0
+    netherite_slag_pickaxe:
+      tier: 8
+      max-damage: 1500
+      attack-damage: 3.0
+      attack-speed: -2.8
+      mining-efficiency: 7.5
       block-break-speed: 0.0
     mithril_pickaxe:
       tier: 7
       max-damage: 1800
       attack-damage: 4.0
       attack-speed: -2.8
-      mining-efficiency: 7.0
+      mining-efficiency: 8.5
       block-break-speed: 0.0
     mithril_slag_pickaxe:
       tier: 6
       max-damage: 900
       attack-damage: 3.0
       attack-speed: -2.8
-      mining-efficiency: 5.5
+      mining-efficiency: 6.0
       block-break-speed: 0.0
 
 # ── Fail rate (Phase 5 — để trống ở Phase 1) ─────────────────
@@ -286,5 +328,5 @@ forge-model:
   # Điều chỉnh vị trí tương đối của mô hình 3D để nó khớp chính xác với tâm của lò rèn
   offset:
     x: 0.5
-    y: 0.0    # Nâng display lên 0.5 block so với bản trước
+    y: 0.5    # Đặt đáy model ngang mặt block
     z: 0.5

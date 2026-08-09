@@ -1,5 +1,5 @@
 {
-  "_schema_version": 4,
+  "_schema_version": 6,
   "id": "ancient_forge/copper_ingot",
   "machine_type": "ANCIENT_FORGE",
   "inputs": [
@@ -15,5 +15,8 @@
   "purification_temperature": 800,
   "max_temperature": 950,
   "fail_chance": 0.08,
-  "underheat_fail_chance": 0.75
+  "underheat_fail_chance": 0.75,
+  "fluxes": [
+    { "custom_item": "borax_powder", "amount": 1 }
+  ]
 }

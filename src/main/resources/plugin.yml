@@ -1,15 +1,16 @@
 name: HaoHanMetallurgy
 version: '${project.version}'
-main: dev.haohansmp.metallurgy.HaoHanMetallurgy
+main: vn.haohan.metallurgy.HaoHanMetallurgy
 api-version: '1.21'
 description: Data-driven metallurgy system for HaoHan SMP
 authors: [ HaoHanSMP ]
 website: https://haohansmp.dev
+depend: [ HaoHanDisplayUI, HaoHanItemCore ]
 
 commands:
   metallurgy:
     description: HaoHan Metallurgy main command
-    usage: /metallurgy <reload|info|debug|list>
+    usage: /metallurgy <info|reload|debug|list|give|menu|language>
     permission: haohansmp.metallurgy.admin
     aliases: [ met, forge ]
 

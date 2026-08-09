@@ -1,5 +1,5 @@
 {
-  "_schema_version": 4,
+  "_schema_version": 6,
   "id": "ancient_forge/mithril_slag_recycling",
   "machine_type": "ANCIENT_FORGE",
   "inputs": [
@@ -16,8 +16,9 @@
   "max_temperature": 1850,
   "fail_chance": 0.25,
   "underheat_fail_chance": 0.95,
-  "additives": ["QUARTZ", "GLOWSTONE_DUST"],
-  "additive_amount": 2,
-  "additive_clean_output_bonus": 0.25,
+  "fluxes": [
+    { "material": "QUARTZ", "amount": 2, "clean_output_bonus": 0.25 },
+    { "material": "GLOWSTONE_DUST", "amount": 2, "clean_output_bonus": 0.25 }
+  ],
   "requires_cold_quench": true
 }

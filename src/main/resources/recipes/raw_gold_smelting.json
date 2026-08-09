@@ -1,5 +1,5 @@
 {
-  "_schema_version": 4,
+  "_schema_version": 6,
   "id": "ancient_forge/gold_ingot",
   "machine_type": "ANCIENT_FORGE",
   "inputs": [
@@ -15,5 +15,8 @@
   "purification_temperature": 1150,
   "max_temperature": 1350,
   "fail_chance": 0.05,
-  "underheat_fail_chance": 0.65
+  "underheat_fail_chance": 0.65,
+  "fluxes": [
+    { "custom_item": "borax_powder", "amount": 1 }
+  ]
 }

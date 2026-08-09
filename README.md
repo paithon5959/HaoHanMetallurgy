@@ -6,11 +6,11 @@
 
 Plugin luyện kim tùy chỉnh cho HaoHan SMP, xây dựng quanh hệ thống Ancient Forge.
 
-[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.x-62B47A?style=for-the-badge&logo=minecraft&logoColor=white)](https://www.minecraft.net/)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-62B47A?style=for-the-badge&logo=minecraft&logoColor=white)](https://www.minecraft.net/)
 [![Paper](https://img.shields.io/badge/Paper-API-222222?style=for-the-badge&logo=paper&logoColor=white)](https://papermc.io/)
 [![Purpur](https://img.shields.io/badge/Purpur-Compatible-8A4FFF?style=for-the-badge)](https://purpurmc.org/)
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
-[![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![Gradle](https://img.shields.io/badge/Gradle-Build-02303A?style=for-the-badge&logo=gradle&logoColor=white)](https://gradle.org/)
 [![Gson](https://img.shields.io/badge/Gson-JSON-2E7D32?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google/gson)
 [![JUnit 5](https://img.shields.io/badge/JUnit-5-25A162?style=for-the-badge&logo=junit5&logoColor=white)](https://junit.org/junit5/)
 
@@ -29,7 +29,7 @@ HaoHan Metallurgy là plugin Minecraft dành cho HaoHan SMP. Plugin cung cấp h
 | Paper API | Nền tảng API chính để phát triển plugin server. |
 | Purpur | Môi trường server khuyến nghị để triển khai. |
 | Java 21 | Ngôn ngữ và runtime chính của plugin. |
-| Maven | Quản lý dependency và build file `.jar`. |
+| Gradle | Quản lý dependency và build file `.jar`. |
 | Gson | Hỗ trợ xử lý dữ liệu JSON cho recipe và cấu hình. |
 | JUnit 5 | Viết và chạy unit test. |
 
@@ -45,7 +45,7 @@ HaoHan Metallurgy là plugin Minecraft dành cho HaoHan SMP. Plugin cung cấp h
 
 - Minecraft server chạy Paper hoặc Purpur.
 - Java 21 trở lên.
-- Maven 3.9 trở lên nếu cần build từ mã nguồn.
+- Không cần cài Gradle riêng; dự án có sẵn Gradle Wrapper.
 - Datapack và resource pack đi kèm để hệ thống hoạt động đầy đủ.
 
 ## Cài đặt
@@ -64,25 +64,15 @@ Sau lần chạy đầu tiên, plugin sẽ tạo file cấu hình tại `plugins
 Chạy lệnh sau tại thư mục gốc của dự án plugin:
 
 ```bash
-mvn clean package
+.\gradlew clean build
 ```
 
-File `.jar` sau khi build nằm trong thư mục `target/`.
+File `.jar` sau khi build nằm trong thư mục `build/libs/`.
 
 Nếu chỉ cần build nhanh mà không chạy test:
 
 ```bash
-mvn clean package -DskipTests
-```
-
-## Script phát triển
-
-Dự án có file `build_and_start.ps1` để hỗ trợ build và khởi động server trong môi trường phát triển cục bộ.
-
-Trước khi dùng, kiểm tra và chỉnh lại các đường dẫn trong script cho phù hợp với máy của bạn, đặc biệt là đường dẫn dự án, thư mục `plugins/` và thư mục server.
-
-```powershell
-.\build_and_start.ps1
+.\gradlew clean assemble
 ```
 
 ## Lệnh
@@ -164,5 +154,6 @@ Khi nâng từ cấu hình cũ lên `config-version: 4`, plugin tạo `config.be
 ## Ghi chú vận hành
 
 - Luôn cài plugin, datapack và resource pack cùng nhau để tránh thiếu recipe, texture hoặc dữ liệu progression.
+- HaoHanMetallurgy phụ thuộc `HaoHanItemCore` (bản 1.0.0). Cài `HaoHanItemCore.jar` trước khi cài plugin này.
 - Không nên chỉnh trực tiếp dữ liệu trong thư mục runtime của server nếu thay đổi có thể được quản lý từ mã nguồn.
 - Khi cập nhật datapack hoặc recipe trong môi trường đang chạy, kiểm tra lại bằng `/reload` và `/metallurgy reload`.

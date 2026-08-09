@@ -9,13 +9,13 @@ server internals that Bukkit/Paper/Purpur API cannot expose cleanly.
 
 ```powershell
 cd ignite-patch
-mvn clean package
+..\gradlew clean :ignite-patch:build
 ```
 
 Output:
 
 ```text
-ignite-patch/target/HaoHanMetallurgy-IgnitePatch-1.0-SNAPSHOT.jar
+ignite-patch/build/libs/HaoHanMetallurgy-IgnitePatch-1.0-SNAPSHOT.jar
 ```
 
 ## Test Server Layout

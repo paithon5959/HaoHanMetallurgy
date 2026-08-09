@@ -1,5 +1,5 @@
 {
-  "_schema_version": 4,
+  "_schema_version": 6,
   "id": "ancient_forge/gold_slag_recycling",
   "machine_type": "ANCIENT_FORGE",
   "inputs": [
@@ -16,7 +16,8 @@
   "max_temperature": 1400,
   "fail_chance": 0.15,
   "underheat_fail_chance": 0.85,
-  "additives": ["SAND", "RED_SAND"],
-  "additive_amount": 1,
-  "additive_clean_output_bonus": 0.25
+  "fluxes": [
+    { "material": "SAND", "amount": 1, "clean_output_bonus": 0.25 },
+    { "material": "RED_SAND", "amount": 1, "clean_output_bonus": 0.25 }
+  ]
 }

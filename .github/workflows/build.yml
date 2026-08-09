@@ -16,21 +16,35 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Check out HaoHanDisplayUI API
+        uses: actions/checkout@v4
+        with:
+          repository: Hao-Han-SMP/HaoHanDisplayUI
+          ref: 5731197c0a1f705bd3fff5efb6c29877348427b4
+          path: HaoHanDisplayUI
+
       - name: Set up Java 21
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "21"
-          cache: maven
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Make Gradle Wrapper executable
+        run: chmod +x gradlew HaoHanDisplayUI/gradlew
+
+      - name: Publish HaoHanDisplayUI API locally
+        run: ./HaoHanDisplayUI/gradlew -p HaoHanDisplayUI publishToMavenLocal
 
       - name: Build and test
-        run: mvn --batch-mode clean package
+        run: ./gradlew clean build
 
       - name: Collect deployable JAR
         run: |
           mkdir -p artifacts
-          find target -maxdepth 1 -type f -name '*.jar' \
-            ! -name 'original-*.jar' \
+          find build/libs -maxdepth 1 -type f -name '*.jar' \
             ! -name '*-sources.jar' \
             ! -name '*-javadoc.jar' \
             -exec cp '{}' artifacts/ \;

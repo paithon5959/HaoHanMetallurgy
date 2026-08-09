@@ -6,11 +6,11 @@
 
 A custom metallurgy plugin for HaoHan SMP, built around the Ancient Forge system.
 
-[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.x-62B47A?style=for-the-badge&logo=minecraft&logoColor=white)](https://www.minecraft.net/)
+[![Minecraft](https://img.shields.io/badge/Minecraft-1.21.11-62B47A?style=for-the-badge&logo=minecraft&logoColor=white)](https://www.minecraft.net/)
 [![Paper](https://img.shields.io/badge/Paper-API-222222?style=for-the-badge&logo=paper&logoColor=white)](https://papermc.io/)
 [![Purpur](https://img.shields.io/badge/Purpur-Compatible-8A4FFF?style=for-the-badge)](https://purpurmc.org/)
 [![Java](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](https://openjdk.org/)
-[![Maven](https://img.shields.io/badge/Maven-Build-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)](https://maven.apache.org/)
+[![Gradle](https://img.shields.io/badge/Gradle-Build-02303A?style=for-the-badge&logo=gradle&logoColor=white)](https://gradle.org/)
 [![Gson](https://img.shields.io/badge/Gson-JSON-2E7D32?style=for-the-badge&logo=google&logoColor=white)](https://github.com/google/gson)
 [![JUnit 5](https://img.shields.io/badge/JUnit-5-25A162?style=for-the-badge&logo=junit5&logoColor=white)](https://junit.org/junit5/)
 
@@ -29,7 +29,7 @@ HaoHan Metallurgy is a Minecraft plugin for HaoHan SMP. It provides a custom met
 | Paper API | Main server API used for plugin development. |
 | Purpur | Recommended server runtime for deployment. |
 | Java 21 | Main programming language and runtime. |
-| Maven | Dependency management and `.jar` build pipeline. |
+| Gradle | Dependency management and `.jar` build pipeline. |
 | Gson | JSON handling for recipe and configuration data. |
 | JUnit 5 | Unit testing framework. |
 
@@ -45,7 +45,8 @@ HaoHan Metallurgy is a Minecraft plugin for HaoHan SMP. It provides a custom met
 
 - Minecraft server running Paper or Purpur.
 - Java 21 or newer.
-- Maven 3.9 or newer if building from source.
+- No separate Gradle installation is required; the Gradle Wrapper is included.
+- HaoHanMetallurgy depends on `HaoHanItemCore` (1.0.0). Install `HaoHanItemCore.jar` before this plugin.
 - The companion datapack and resource pack for the full feature set.
 
 ## Installation
@@ -64,25 +65,15 @@ On first startup, the plugin creates its configuration file at `plugins/HaoHanMe
 Run this command in the plugin project root:
 
 ```bash
-mvn clean package
+.\gradlew clean build
 ```
 
-The built `.jar` file will be generated in the `target/` directory.
+The built `.jar` file will be generated in the `build/libs/` directory.
 
 For a faster build without tests:
 
 ```bash
-mvn clean package -DskipTests
-```
-
-## Development Script
-
-The project includes `build_and_start.ps1` to help build the plugin and start a local development server.
-
-Before using it, review and update the paths in the script for your machine, especially the project path, the server `plugins/` directory, and the server directory.
-
-```powershell
-.\build_and_start.ps1
+.\gradlew clean assemble
 ```
 
 ## Commands
