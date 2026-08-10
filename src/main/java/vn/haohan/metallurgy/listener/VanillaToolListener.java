@@ -3,6 +3,8 @@ package vn.haohan.metallurgy.listener;
 import vn.haohan.metallurgy.HaoHanMetallurgy;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,6 +17,7 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.inventory.EquipmentSlotGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +26,12 @@ public class VanillaToolListener implements Listener {
 
     private final HaoHanMetallurgy plugin;
     private final NamespacedKey formatKey;
+    private final NamespacedKey copperStatsKey;
 
     public VanillaToolListener(HaoHanMetallurgy plugin) {
         this.plugin = plugin;
         this.formatKey = new NamespacedKey(plugin, "vanilla_pickaxe_formatted");
+        this.copperStatsKey = new NamespacedKey(plugin, "copper_pickaxe_stats_applied");
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -73,6 +78,7 @@ public class VanillaToolListener implements Listener {
         return mat == Material.WOODEN_PICKAXE
                 || mat == Material.STONE_PICKAXE
                 || mat == Material.GOLDEN_PICKAXE
+                || mat == Material.COPPER_PICKAXE
                 || mat == Material.IRON_PICKAXE
                 || mat == Material.DIAMOND_PICKAXE
                 || mat == Material.NETHERITE_PICKAXE;
@@ -100,6 +106,12 @@ public class VanillaToolListener implements Listener {
 
         meta.setDisplayName(name);
 
+        if (item.getType() == Material.COPPER_PICKAXE
+                && !meta.getPersistentDataContainer().has(copperStatsKey, PersistentDataType.BOOLEAN)) {
+            applyCopperStats(meta);
+            meta.getPersistentDataContainer().set(copperStatsKey, PersistentDataType.BOOLEAN, true);
+        }
+
         // Giữ lại mô tả cũ hoặc thông tin enchantments của vật phẩm, chỉ chèn thông tin
         // Tier của chúng ta
         List<String> newLore = new ArrayList<>();
@@ -122,6 +134,25 @@ public class VanillaToolListener implements Listener {
         return item;
     }
 
+    private void applyCopperStats(ItemMeta meta) {
+        if (meta instanceof org.bukkit.inventory.meta.Damageable damageable) {
+            damageable.setMaxDamage(165);
+        }
+        meta.removeAttributeModifier(Attribute.ATTACK_DAMAGE);
+        meta.removeAttributeModifier(Attribute.ATTACK_SPEED);
+        meta.removeAttributeModifier(Attribute.MINING_EFFICIENCY);
+        meta.removeAttributeModifier(Attribute.BLOCK_BREAK_SPEED);
+        addCopperModifier(meta, Attribute.ATTACK_DAMAGE, "attack_damage", 2.0);
+        addCopperModifier(meta, Attribute.ATTACK_SPEED, "attack_speed", -2.8);
+        addCopperModifier(meta, Attribute.MINING_EFFICIENCY, "mining_efficiency", 2.5);
+    }
+
+    private void addCopperModifier(ItemMeta meta, Attribute attribute, String name, double amount) {
+        meta.addAttributeModifier(attribute, new AttributeModifier(
+                new NamespacedKey(plugin, "copper_pickaxe_" + name), amount,
+                AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
+    }
+
     private int getPickaxeTier(Material type) {
         return plugin.getConfigManager().getVanillaToolTier(type);
     }
@@ -131,6 +162,7 @@ public class VanillaToolListener implements Listener {
             case WOODEN_PICKAXE -> "§fWooden Pickaxe";
             case STONE_PICKAXE -> "§7Stone Pickaxe";
             case GOLDEN_PICKAXE -> "§eGolden Pickaxe";
+            case COPPER_PICKAXE -> "§6Copper Pickaxe";
             case IRON_PICKAXE -> "§fIron Pickaxe";
             case DIAMOND_PICKAXE -> "§bDiamond Pickaxe";
             case NETHERITE_PICKAXE -> "§5Netherite Pickaxe";

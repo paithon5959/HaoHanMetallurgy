@@ -478,7 +478,6 @@ public class ConfigManager {
 
         customItemStats = new EnumMap<>(CustomItem.class);
         customItemStats.put(CustomItem.COPPER_SLAG_PICKAXE, new CustomItemStats(3, 95, 2.0, -2.8, 1.5, 0.0));
-        customItemStats.put(CustomItem.COPPER_PICKAXE, new CustomItemStats(3, 165, 2.0, -2.8, 2.5, 0.0));
         customItemStats.put(CustomItem.IRON_SLAG_PICKAXE, new CustomItemStats(3, 190, 3.0, -2.8, 3.5, 0.0));
         customItemStats.put(CustomItem.GOLD_SLAG_PICKAXE, new CustomItemStats(1, 24, 1.0, -2.8, 8.0, 0.0));
         customItemStats.put(CustomItem.EMBERSTEEL_SLAG_PICKAXE, new CustomItemStats(4, 120, 2.0, -2.8, 2.0, 0.0));

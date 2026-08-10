@@ -234,13 +234,6 @@ progression:
       attack-speed: -2.8
       mining-efficiency: 1.5
       block-break-speed: 0.0
-    copper_pickaxe:
-      tier: 3
-      max-damage: 165
-      attack-damage: 2.0
-      attack-speed: -2.8
-      mining-efficiency: 2.5
-      block-break-speed: 0.0
     iron_slag_pickaxe:
       tier: 3
       max-damage: 190

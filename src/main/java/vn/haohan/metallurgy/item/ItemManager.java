@@ -216,7 +216,7 @@ public class ItemManager {
         return switch (item) {
             case EMBER_SHARD, EMBERSTEEL_INGOT, EMBERSTEEL_PICKAXE,
                     EMBERSTEEL_SLAG, EMBERSTEEL_SLAG_PICKAXE,
-                    GOLD_SLAG, GOLD_SLAG_PICKAXE, COPPER_PICKAXE, BOW_DRILL -> NamedTextColor.GOLD;
+                    GOLD_SLAG, GOLD_SLAG_PICKAXE, BOW_DRILL -> NamedTextColor.GOLD;
             case SOUL_CRYSTAL, SOULSTEEL_INGOT, SOULSTEEL_PICKAXE,
                     MITHRIL_SHARD, MITHRIL_INGOT, MITHRIL_PICKAXE,
                     MITHRIL_ORE, DEEPSLATE_MITHRIL_ORE -> NamedTextColor.AQUA;

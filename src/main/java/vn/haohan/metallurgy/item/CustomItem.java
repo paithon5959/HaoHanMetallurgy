@@ -106,13 +106,6 @@ public enum CustomItem {
         "§cCopper Slag Pickaxe",
         List.of("§7Cúp được đúc tạm thời từ sỉ đồng.", "§8Tier: §c3")
     ),
-    COPPER_PICKAXE(
-        "copper_pickaxe",
-        Material.STONE_PICKAXE,
-        0,
-        "§6Copper Pickaxe",
-        List.of("§7Cúp đồng tinh luyện chắc chắn.", "§8Tier: §c3")
-    ),
     IRON_SLAG_PICKAXE(
         "iron_slag_pickaxe",
         Material.IRON_PICKAXE,
