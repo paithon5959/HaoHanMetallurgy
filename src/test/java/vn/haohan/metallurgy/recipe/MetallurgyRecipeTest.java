@@ -48,7 +48,7 @@ class MetallurgyRecipeTest {
             30,
             800,
             1200,
-            "haohansmp:metallurgy/root"
+            "haohan:metallurgy/root"
         );
     }
 
@@ -88,7 +88,7 @@ class MetallurgyRecipeTest {
         assertEquals(30, recipe.getTimeSeconds());
         assertEquals(800, recipe.getMinTemperature());
         assertEquals(1200, recipe.getMaxTemperature());
-        assertEquals("haohansmp:metallurgy/root", recipe.getRequiredAdvancement());
+        assertEquals("haohan:metallurgy/root", recipe.getRequiredAdvancement());
     }
 
     @Test

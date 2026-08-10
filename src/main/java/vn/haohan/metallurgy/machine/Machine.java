@@ -752,7 +752,7 @@ public abstract class Machine {
         if (advancementId == null) return;
 
         var player = Bukkit.getPlayer(recipeOperator);
-        var key = NamespacedKey.fromString("haohansmp:metallurgy/" + advancementId);
+        var key = NamespacedKey.fromString("haohan:metallurgy/" + advancementId);
         if (player == null || key == null) return;
         var advancement = Bukkit.getAdvancement(key);
         if (advancement == null) return;

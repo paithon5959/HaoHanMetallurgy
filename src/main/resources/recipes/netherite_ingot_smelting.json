@@ -17,7 +17,7 @@
   "max_temperature": 2100,
   "fail_chance": 0.2,
   "underheat_fail_chance": 0.98,
-  "required_advancement": "haohansmp:metallurgy/forge_soulsteel_ingot",
+  "required_advancement": "haohan:metallurgy/forge_soulsteel_ingot",
   "fluxes": [
     { "custom_item": "borax_powder", "amount": 1 }
   ]

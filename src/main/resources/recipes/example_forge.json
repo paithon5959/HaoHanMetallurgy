@@ -18,7 +18,7 @@
   "max_temperature": 1450,
   "fail_chance": 0.15,
   "underheat_fail_chance": 0.90,
-  "required_advancement": "haohansmp:metallurgy/root",
+  "required_advancement": "haohan:metallurgy/root",
   "fluxes": [
     { "custom_item": "borax_powder", "amount": 1 }
   ]

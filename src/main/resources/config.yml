@@ -57,7 +57,7 @@ gui:
     enabled: true
     prefix: "\uE100"
     glyph: "\uE101"
-    font: "haohansmp:gui"
+    font: "haohan:gui"
   # Slot layout: xem GuiManager hoặc ForgeGui để biết ý nghĩa từng slot
   fuel-slot: 3          # Ô nhiên liệu 1
   fuel-slot-2: 2        # Ô nhiên liệu 2 (mới)
@@ -317,7 +317,7 @@ forge-model:
   material: "PAPER"
   # Minecraft 1.21.4+: dùng item_model component để trỏ thẳng tới
   # HaoHanMetallurgy_Resourcepack/assets/minecraft/items/metallurgy.json
-  item-model: "haohansmp:metallurgy"
+  item-model: "haohan:metallurgy"
   # Fallback/debug cho resource pack kiểu cũ.
   custom-model-data: 10001
   # Bạn có thể tăng giảm scale ở đây nếu model hiển thị quá to/nhỏ trong game

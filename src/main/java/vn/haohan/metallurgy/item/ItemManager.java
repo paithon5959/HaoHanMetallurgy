@@ -26,7 +26,7 @@ import java.util.Optional;
  */
 public class ItemManager {
 
-    private static final NamespacedKey BOW_DRILL_MODEL = NamespacedKey.fromString("haohansmp:bow_drill");
+    private static final NamespacedKey BOW_DRILL_MODEL = NamespacedKey.fromString("haohan:bow_drill");
 
     private final HaoHanMetallurgy plugin;
     private final NamespacedKey itemKey;

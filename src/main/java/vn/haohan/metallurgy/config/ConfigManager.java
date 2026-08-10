@@ -365,7 +365,7 @@ public class ConfigManager {
         forgeCustomGuiEnabled = config.getBoolean("gui.forge-custom.enabled", true);
         forgeCustomGuiPrefix = config.getString("gui.forge-custom.prefix", "\uE100");
         forgeCustomGuiGlyph = config.getString("gui.forge-custom.glyph", "\uE101");
-        forgeCustomGuiFont = parseNamespacedKey(config.getString("gui.forge-custom.font", "haohansmp:gui"));
+        forgeCustomGuiFont = parseNamespacedKey(config.getString("gui.forge-custom.font", "haohan:gui"));
         failEnabled      = config.getBoolean("fail.enabled", false);
         failBaseChance   = config.getDouble("fail.base-chance", 0.05);
 
@@ -407,7 +407,7 @@ public class ConfigManager {
         if (modelMaterial == null) {
             modelMaterial = Material.PAPER;
         }
-        modelItemModel = parseNamespacedKey(config.getString("forge-model.item-model", "haohansmp:metallurgy"));
+        modelItemModel = parseNamespacedKey(config.getString("forge-model.item-model", "haohan:metallurgy"));
         modelCustomModelData = config.getInt("forge-model.custom-model-data", 0);
         modelScaleX = config.getDouble("forge-model.scale.x", 3.0);
         modelScaleY = config.getDouble("forge-model.scale.y", 4.0);

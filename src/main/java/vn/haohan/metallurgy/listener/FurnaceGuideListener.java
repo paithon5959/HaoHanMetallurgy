@@ -55,7 +55,7 @@ import java.util.UUID;
 /** Data-driven, category-based Ancient Forge guide. */
 public final class FurnaceGuideListener implements Listener {
     private static final String OWNER_KEY = "haohanmetallurgy:forge_guide";
-    private static final Key GUIDE_FONT = Key.key("haohansmp:furnace_guide");
+    private static final Key GUIDE_FONT = Key.key("haohan:furnace_guide");
     private static final String PANEL_GLYPH = "\uE200";
     private static final double DISPLAY_DISTANCE = 5.5;
     private static final float PIXELS_PER_BLOCK = 40.0f;

@@ -328,7 +328,7 @@ public class ForgeListener implements Listener {
         }
 
         player.sendMessage("§8[§6Forge§8] §a✔ Kích hoạt Lò Rèn Cổ Đại thành công! Mô hình 3D đã được thiết lập.");
-        awardAdvancement(player, "haohansmp:metallurgy/root");
+        awardAdvancement(player, "haohan:metallurgy/root");
         forge.playActivationEffects();
         plugin.getMachineManager().saveAll();
         plugin.getPluginLogger().info(
