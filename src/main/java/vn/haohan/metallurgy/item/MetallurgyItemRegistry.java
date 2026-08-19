@@ -42,6 +42,13 @@ final class MetallurgyItemRegistry {
                     // localized text and the configured gameplay stats to each generated stack.
                     .property("metallurgy_item_id", item.getId());
 
+            if (CustomOreBlock.isManagedBlock(item)) {
+                String blockData = CustomOreBlock.blockDataStringFor(item);
+                if (blockData != null) {
+                    definition.property("custom_block_data", blockData);
+                }
+            }
+
             // Keep CMD in the definition so ItemCore's browser and recipe viewer
             // can render the same resource-pack variant as a normal Metallurgy stack.
             // The GUI removes only ItemCore's inferred model component afterward.
