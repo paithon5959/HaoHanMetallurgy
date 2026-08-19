@@ -41,6 +41,7 @@ final class MetallurgyItemRegistry {
                 String blockData = CustomOreBlock.blockDataStringFor(item);
                 if (blockData != null) {
                     definition.property("custom_block_data", blockData);
+                    definition.property("custom_block_drop", "none");
                     definition.property("hide_additional_tooltip", true);
                 }
             }
