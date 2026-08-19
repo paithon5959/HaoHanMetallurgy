@@ -25,6 +25,15 @@ public class MetallurgyCommand implements CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args) {
+        return execute(sender, label, args);
+    }
+
+    /**
+     * Command entry point shared by Bukkit's legacy adapter and Paper's
+     * BasicCommand registration.
+     */
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label,
+                           @NotNull String[] args) {
         if (!sender.hasPermission(PERMISSION)) return reply(sender, "error.permission");
         if (args.length == 0) return help(sender);
 
@@ -43,8 +52,14 @@ public class MetallurgyCommand implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command,
                                       @NotNull String alias, @NotNull String[] args) {
+        return suggest(sender, alias, args);
+    }
+
+    public List<String> suggest(@NotNull CommandSender sender, @NotNull String alias,
+                                @NotNull String[] args) {
         if (args.length == 1) return List.of("info", "menu", "give", "list", "reload", "debug", "language");
-        if (args.length == 2 && args[0].equalsIgnoreCase("give")) return null;
+        if (args.length == 2 && args[0].equalsIgnoreCase("give"))
+            return Bukkit.getOnlinePlayers().stream().map(Player::getName).toList();
         if (args.length == 2 && (args[0].equalsIgnoreCase("language") || args[0].equalsIgnoreCase("lang")))
             return plugin.getLanguageManager().getSupportedLanguages();
         if (args.length == 3 && args[0].equalsIgnoreCase("give"))

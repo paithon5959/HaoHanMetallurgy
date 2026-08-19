@@ -14,12 +14,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MetallurgyGuideDataTest {
     @Test
     void outputChanceDerivesComplementarySlagRates() {
-        OutputChance chance = new OutputChance(0.08, 0.95, 1);
+        OutputChance chance = new OutputChance(0.35, 0.98, 1);
 
-        assertEquals(8, chance.cleanWithoutBoraxPercent());
-        assertEquals(92, chance.slagWithoutBoraxPercent());
-        assertEquals(95, chance.cleanWithBoraxPercent());
-        assertEquals(5, chance.slagWithBoraxPercent());
+        assertEquals(35, chance.cleanWithoutBoraxPercent());
+        assertEquals(65, chance.slagWithoutBoraxPercent());
+        assertEquals(98, chance.cleanWithBoraxPercent());
+        assertEquals(2, chance.slagWithBoraxPercent());
     }
 
     @Test

@@ -1,0 +1,14 @@
+{
+  "display": {
+    "icon": { "id": "minecraft:netherite_ingot" },
+    "title": { "text": "Hợp Kim Bất Diệt", "color": "dark_purple" },
+    "description": { "text": "Chinh phục ngọn lửa và luyện thành Netherite Ingot.", "color": "gray" },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "frame": "challenge"
+  },
+  "parent": "haohan:metallurgy/forge_soulsteel_ingot",
+  "rewards": { "experience": 100 },
+  "criteria": { "forged": { "trigger": "minecraft:impossible" } }
+}

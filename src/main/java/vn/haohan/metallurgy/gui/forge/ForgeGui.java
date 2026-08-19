@@ -345,15 +345,9 @@ public class ForgeGui extends MetallurgyGui {
         // Kiểm tra Advancement yêu cầu
         String reqAdv = recipe.getRequiredAdvancement();
         if (reqAdv != null && !reqAdv.isEmpty()) {
-            org.bukkit.NamespacedKey key = org.bukkit.NamespacedKey.fromString(reqAdv);
-            if (key != null) {
-                org.bukkit.advancement.Advancement adv = org.bukkit.Bukkit.getAdvancement(key);
-                if (adv != null) {
-                    if (!player.getAdvancementProgress(adv).isDone()) {
-                        player.sendMessage("§8[§6Forge§8] §cBạn chưa đạt tiến trình rèn công thức này!");
-                        return;
-                    }
-                }
+            if (!plugin.getProgressionManager().hasCompleted(player, reqAdv)) {
+                player.sendMessage("§8[§6Forge§8] §cBạn chưa đạt tiến trình rèn công thức này!");
+                return;
             }
         }
 

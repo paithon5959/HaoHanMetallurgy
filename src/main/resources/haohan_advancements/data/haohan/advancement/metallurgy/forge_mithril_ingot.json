@@ -1,0 +1,13 @@
+{
+  "display": {
+    "icon": { "id": "minecraft:prismarine_crystals" },
+    "title": { "text": "Kim Loại Trong Huyền Thoại", "color": "aqua" },
+    "description": { "text": "Tinh luyện Mithril, thứ kim loại từng chỉ có trong truyền thuyết.", "color": "gray" },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "frame": "task"
+  },
+  "parent": "haohan:metallurgy/forge_embersteel_ingot",
+  "criteria": { "forged": { "trigger": "minecraft:impossible" } }
+}

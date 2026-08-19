@@ -81,6 +81,7 @@ public class ConfigManager {
     private int modelCustomModelData;
     private double modelScaleX, modelScaleY, modelScaleZ;
     private double modelOffsetX, modelOffsetY, modelOffsetZ;
+    private float modelViewRange;
 
     public ConfigManager(HaoHanMetallurgy plugin) {
         this.plugin = plugin;
@@ -183,6 +184,7 @@ public class ConfigManager {
     public double getModelOffsetX()          { return modelOffsetX; }
     public double getModelOffsetY()          { return modelOffsetY; }
     public double getModelOffsetZ()          { return modelOffsetZ; }
+    public float getModelViewRange()         { return modelViewRange; }
 
     /**
      * Trả về số ticks fuel của material này cung cấp.
@@ -251,10 +253,10 @@ public class ConfigManager {
     private void migrateConfigIfNeeded() {
         FileConfiguration current = plugin.getConfig();
         int currentVersion = current.getInt("config-version", 0);
-        if (currentVersion >= 11) return;
+        if (currentVersion >= 12) return;
 
         File configFile = new File(plugin.getDataFolder(), "config.yml");
-        File backupFile = new File(plugin.getDataFolder(), "config.before-v11.yml");
+        File backupFile = new File(plugin.getDataFolder(), "config.before-v12.yml");
         try {
             if (configFile.exists() && !backupFile.exists()) {
                 Files.copy(configFile.toPath(), backupFile.toPath());
@@ -304,8 +306,14 @@ public class ConfigManager {
                     paths.add("vanilla-furnaces.clean-output-chance");
                 }
                 if (currentVersion < 11) {
-                    // Balance update: vanilla furnaces now yield 10% clean
-                    // metal. Copy the new bundled value over v10's 15%.
+                    // Balance update from config v10 to v11. The v12 balance
+                    // update below applies the current furnace rate.
+                    paths.add("vanilla-furnaces.clean-output-chance");
+                }
+                if (currentVersion < 12) {
+                    // Balance update: raise clean output across every furnace path.
+                    paths.add("additives.clean-output-chance-with-borax");
+                    paths.add("additives.clean-output-chance-without-borax");
                     paths.add("vanilla-furnaces.clean-output-chance");
                 }
                 for (String path : paths) {
@@ -318,12 +326,12 @@ public class ConfigManager {
                 }
             }
 
-            current.set("config-version", 11);
+            current.set("config-version", 12);
             plugin.saveConfig();
-            plugin.getPluginLogger().info("Migrated metallurgy config to version 11"
-                    + (backupFile.exists() ? " (backup: config.before-v11.yml)" : ""));
+            plugin.getPluginLogger().info("Migrated metallurgy config to version 12"
+                    + (backupFile.exists() ? " (backup: config.before-v12.yml)" : ""));
         } catch (Exception e) {
-            plugin.getPluginLogger().error("Could not migrate config.yml to version 11", e);
+            plugin.getPluginLogger().error("Could not migrate config.yml to version 12", e);
         }
     }
 
@@ -392,11 +400,11 @@ public class ConfigManager {
         additiveSlot = config.getInt("gui.additive-slot", 10);
         boraxPerBatch = Math.max(1, config.getInt("additives.borax-per-batch", 1));
         cleanOutputChanceWithBorax = clampChance(
-                config.getDouble("additives.clean-output-chance-with-borax", 0.95));
+                config.getDouble("additives.clean-output-chance-with-borax", 0.98));
         cleanOutputChanceWithoutBorax = clampChance(
-                config.getDouble("additives.clean-output-chance-without-borax", 0.08));
+                config.getDouble("additives.clean-output-chance-without-borax", 0.35));
         vanillaFurnaceCleanOutputChance = clampChance(
-                config.getDouble("vanilla-furnaces.clean-output-chance", 0.10));
+                config.getDouble("vanilla-furnaces.clean-output-chance", 0.25));
         loadFuelCombinations();
     }
 
@@ -427,6 +435,8 @@ public class ConfigManager {
             plugin.saveConfig();
         }
         modelOffsetZ = config.getDouble("forge-model.offset.z", 0.5);
+        modelViewRange = (float) Math.max(1.0, Math.min(128.0,
+                config.getDouble("forge-model.view-range", 32.0)));
     }
 
     private NamespacedKey parseNamespacedKey(String raw) {

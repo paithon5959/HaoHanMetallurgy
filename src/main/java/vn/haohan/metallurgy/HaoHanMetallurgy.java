@@ -1,5 +1,7 @@
 package vn.haohan.metallurgy;
 
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import vn.haohan.displayui.api.DisplayUiService;
 import vn.haohan.metallurgy.command.MetallurgyCommand;
 import vn.haohan.metallurgy.config.ConfigManager;
@@ -20,6 +22,7 @@ import vn.haohan.metallurgy.listener.ManagedDisplayProtectionListener;
 import vn.haohan.metallurgy.listener.FurnaceGuideListener;
 import vn.haohan.metallurgy.machine.MachineManager;
 import vn.haohan.metallurgy.ore.CustomOreManager;
+import vn.haohan.metallurgy.progression.ProgressionManager;
 import vn.haohan.metallurgy.recipe.CraftingRecipeManager;
 import vn.haohan.metallurgy.recipe.RecipeLoader;
 import vn.haohan.metallurgy.util.PluginLogger;
@@ -48,6 +51,7 @@ public final class HaoHanMetallurgy extends JavaPlugin {
     private RecipeLoader recipeLoader;
     private MachineManager machineManager;
     private CustomOreManager customOreManager;
+    private ProgressionManager progressionManager;
     private GuiManager guiManager;
     private TickEngine tickEngine;
     private CustomOreListener customOreListener;
@@ -78,6 +82,7 @@ public final class HaoHanMetallurgy extends JavaPlugin {
 
         // 2.5 Item Manager
         itemManager = new ItemManager(this);
+        progressionManager = new ProgressionManager(this);
         registerDisplayIcons();
         craftingRecipeManager = new CraftingRecipeManager(this);
         getServer().getPluginManager().registerEvents(craftingRecipeManager, this);
@@ -118,11 +123,23 @@ public final class HaoHanMetallurgy extends JavaPlugin {
 
         // 7. Commands
         var cmd = new MetallurgyCommand(this);
-        var metallurgyCmd = getCommand("metallurgy");
-        if (metallurgyCmd != null) {
-            metallurgyCmd.setExecutor(cmd);
-            metallurgyCmd.setTabCompleter(cmd);
-        }
+        registerCommand("metallurgy", "HaoHan Metallurgy main command",
+                java.util.List.of("met", "forge"), new BasicCommand() {
+                    @Override
+                    public void execute(CommandSourceStack source, String[] args) {
+                        cmd.execute(source.getSender(), "metallurgy", args);
+                    }
+
+                    @Override
+                    public java.util.Collection<String> suggest(CommandSourceStack source, String[] args) {
+                        return cmd.suggest(source.getSender(), "metallurgy", args);
+                    }
+
+                    @Override
+                    public String permission() {
+                        return "haohansmp.metallurgy.admin";
+                    }
+                });
 
         // 8. Restore active machines sau 1 tick để world/chunk state ổn định hơn khi restart.
         getServer().getScheduler().runTask(this, () -> {
@@ -192,6 +209,7 @@ public final class HaoHanMetallurgy extends JavaPlugin {
     public RecipeLoader getRecipeLoader()   { return recipeLoader; }
     public MachineManager getMachineManager() { return machineManager; }
     public CustomOreManager getCustomOreManager() { return customOreManager; }
+    public ProgressionManager getProgressionManager() { return progressionManager; }
     public GuiManager getGuiManager()       { return guiManager; }
     public TickEngine getTickEngine()       { return tickEngine; }
 }

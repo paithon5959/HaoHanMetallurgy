@@ -12,6 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      # Keep the producer and consumer on the same isolated Maven repository.
+      MAVEN_REPO_LOCAL: ${{ runner.temp }}/maven-repository
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -36,10 +40,14 @@ jobs:
         run: chmod +x gradlew HaoHanDisplayUI/gradlew
 
       - name: Publish HaoHanDisplayUI API locally
-        run: ./HaoHanDisplayUI/gradlew -p HaoHanDisplayUI publishToMavenLocal
+        run: |
+          ./HaoHanDisplayUI/gradlew -p HaoHanDisplayUI \
+            -Dmaven.repo.local="$MAVEN_REPO_LOCAL" \
+            publishMavenJavaPublicationToMavenLocal
+          test -f "$MAVEN_REPO_LOCAL/vn/haohan/HaoHanDisplayUI/1.0.1/HaoHanDisplayUI-1.0.1.pom"
 
       - name: Build and test
-        run: ./gradlew clean build
+        run: ./gradlew -Dmaven.repo.local="$MAVEN_REPO_LOCAL" clean build
 
       - name: Collect deployable JAR
         run: |

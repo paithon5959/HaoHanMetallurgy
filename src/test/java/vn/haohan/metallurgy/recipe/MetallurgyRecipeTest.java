@@ -316,7 +316,7 @@ class MetallurgyRecipeTest {
             var config = YamlConfiguration.loadConfiguration(
                     new InputStreamReader(stream, StandardCharsets.UTF_8));
 
-            assertEquals(11, config.getInt("config-version"));
+            assertEquals(12, config.getInt("config-version"));
             assertEquals(0.8, config.getDouble("machines.time-speed-multiplier"), 0.0001);
             assertEquals(3, config.getInt("progression.mining-requirements.minecraft:coal_ore"));
             assertEquals(3, config.getInt("progression.mining-requirements.minecraft:deepslate_coal_ore"));
@@ -341,9 +341,9 @@ class MetallurgyRecipeTest {
             assertEquals(30, config.getInt("temperature.piston-bellows-boost"));
             assertEquals(5, config.getInt("temperature.piston-progress-ticks"));
             assertEquals(1, config.getInt("additives.borax-per-batch"));
-            assertEquals(0.95, config.getDouble("additives.clean-output-chance-with-borax"), 0.0001);
-            assertEquals(0.08, config.getDouble("additives.clean-output-chance-without-borax"), 0.0001);
-            assertEquals(0.10, config.getDouble("vanilla-furnaces.clean-output-chance"), 0.0001);
+            assertEquals(0.98, config.getDouble("additives.clean-output-chance-with-borax"), 0.0001);
+            assertEquals(0.35, config.getDouble("additives.clean-output-chance-without-borax"), 0.0001);
+            assertEquals(0.25, config.getDouble("vanilla-furnaces.clean-output-chance"), 0.0001);
             assertTrue(config.getBoolean("fail.enabled"));
         }
     }

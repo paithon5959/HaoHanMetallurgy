@@ -156,6 +156,7 @@ public class AncientForge extends Machine {
                 if (formatLoc(getLocation()).equals(locStr)) {
                     displayEntity = display;
                     display.addScoreboardTag(vn.haohan.metallurgy.listener.ManagedDisplayProtectionListener.MANAGED_TAG);
+                    applyDisplayCulling(display);
                     updateDisplayModel(true);
                     updateActiveLightBlocks(true);
                     return; // Đã tìm thấy, bỏ qua spawn trùng lặp
@@ -185,6 +186,7 @@ public class AncientForge extends Machine {
 
             entity.setInvulnerable(true);
             entity.setGravity(false);
+            applyDisplayCulling(entity);
             entity.addScoreboardTag(vn.haohan.metallurgy.listener.ManagedDisplayProtectionListener.MANAGED_TAG);
 
             // Đánh dấu tag nhận diện để cleanup khi cần
@@ -194,6 +196,15 @@ public class AncientForge extends Machine {
                     formatLoc(getLocation()));
         });
         updateDisplayModel(true);
+    }
+
+    /**
+     * Giới hạn khoảng cách client render model BlockDisplay.
+     * Entity và trạng thái máy vẫn tồn tại; chỉ model không được render khi
+     * người chơi ở quá xa.
+     */
+    private void applyDisplayCulling(org.bukkit.entity.Display display) {
+        display.setViewRange(plugin.getConfigManager().getModelViewRange());
     }
 
     public void removeDisplayEntity() {
@@ -256,12 +267,7 @@ public class AncientForge extends Machine {
         }
 
         org.bukkit.entity.Player player = org.bukkit.Bukkit.getPlayer(getRecipeOperator());
-        org.bukkit.NamespacedKey key = org.bukkit.NamespacedKey.fromString(requiredAdvancement);
-        if (player == null || key == null) {
-            return false;
-        }
-        org.bukkit.advancement.Advancement advancement = org.bukkit.Bukkit.getAdvancement(key);
-        return advancement == null || player.getAdvancementProgress(advancement).isDone();
+        return player != null && plugin.getProgressionManager().hasCompleted(player, requiredAdvancement);
     }
 
     private boolean matchesInputs(MetallurgyRecipe recipe, ItemStack item1, ItemStack item2) {

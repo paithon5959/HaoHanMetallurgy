@@ -1,0 +1,19 @@
+name: HaoHanMetallurgy
+version: '${project.version}'
+main: vn.haohan.metallurgy.HaoHanMetallurgy
+api-version: '1.21'
+description: Data-driven metallurgy system for HaoHan SMP
+authors: [ HaoHanSMP ]
+website: https://haohansmp.dev
+bootstrapper: vn.haohan.metallurgy.HaoHanMetallurgyBootstrap
+
+dependencies:
+  server:
+    HaoHanDisplayUI:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    HaoHanItemCore:
+      load: BEFORE
+      required: true
+      join-classpath: true

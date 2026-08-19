@@ -1,0 +1,13 @@
+{
+  "display": {
+    "icon": { "id": "minecraft:echo_shard" },
+    "title": { "text": "Tiếng Vọng Linh Hồn", "color": "dark_aqua" },
+    "description": { "text": "Rèn linh hồn vào thép và lắng nghe tiếng vọng từ bên kia.", "color": "gray" },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "frame": "task"
+  },
+  "parent": "haohan:metallurgy/forge_mithril_ingot",
+  "criteria": { "forged": { "trigger": "minecraft:impossible" } }
+}

@@ -66,6 +66,7 @@ public class CraftingRecipeManager implements Listener {
     public void registerAll() {
         recipeKeys.clear();
         unregisterBrowserRecipes();
+        removeVanillaNetheriteRecipes();
         registerMithrilCompression();
         registerBoraxGrinding();
         registerBowDrill();
@@ -75,6 +76,30 @@ public class CraftingRecipeManager implements Listener {
         registerSlagPickaxes();
         registerBrowserRecipes();
         discoverRecipesForOnlinePlayers();
+    }
+
+    /**
+     * Own the Netherite lock in the plugin so the companion datapack is not
+     * needed to disable vanilla crafting/smithing paths.
+     */
+    private void removeVanillaNetheriteRecipes() {
+        List<NamespacedKey> keys = new java.util.ArrayList<>();
+        java.util.Iterator<Recipe> recipes = plugin.getServer().recipeIterator();
+        while (recipes.hasNext()) {
+            Recipe recipe = recipes.next();
+            if (!(recipe instanceof Keyed keyed)
+                    || !NamespacedKey.MINECRAFT.equals(keyed.getKey().getNamespace())) {
+                continue;
+            }
+            String id = keyed.getKey().getKey();
+            if ("netherite_ingot".equals(id)
+                    || "netherite_scrap".equals(id)
+                    || "netherite_scrap_from_blasting".equals(id)
+                    || (id.startsWith("netherite_") && id.endsWith("_smithing"))) {
+                keys.add(keyed.getKey());
+            }
+        }
+        keys.forEach(plugin.getServer()::removeRecipe);
     }
 
     /**

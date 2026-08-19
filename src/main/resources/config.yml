@@ -3,7 +3,7 @@
 # Mọi giá trị gameplay đều ở đây. Không hardcode trong code.
 # ============================================================
 
-config-version: 11
+config-version: 12
 
 # Ngôn ngữ hiển thị: vi hoặc en
 language: vi
@@ -57,7 +57,8 @@ gui:
     enabled: true
     prefix: "\uE100"
     glyph: "\uE101"
-    font: "haohan:gui"
+    # Dùng default font để tương thích với client Fabric/1.21.11.
+    font: "minecraft:default"
   # Slot layout: xem GuiManager hoặc ForgeGui để biết ý nghĩa từng slot
   fuel-slot: 3          # Ô nhiên liệu 1
   fuel-slot-2: 2        # Ô nhiên liệu 2 (mới)
@@ -163,15 +164,15 @@ temperature:
 additives:
   # Chỉ Borax Powder (custom item borax_powder) mới được nhận là flux.
   borax-per-batch: 1
-  # Có bột Borax: 95% kim loại sạch, 5% sỉ.
-  clean-output-chance-with-borax: 0.95
-  # Không có flux: 8% kim loại sạch, 92% sỉ.
-  clean-output-chance-without-borax: 0.08
+  # Có bột Borax: 98% kim loại sạch, 2% sỉ.
+  clean-output-chance-with-borax: 0.98
+  # Không có flux: 35% kim loại sạch, 65% sỉ.
+  clean-output-chance-without-borax: 0.35
 
 # Furnace và Blast Furnace vanilla không có ô flux. Chúng nung chậm
-# như cấu hình hiện tại và có 10% cơ hội cho kim loại sạch.
+# như cấu hình hiện tại và có 25% cơ hội cho kim loại sạch.
 vanilla-furnaces:
-  clean-output-chance: 0.10
+  clean-output-chance: 0.25
 
 
 # ── Progression ───────────────────────────────────────────────
@@ -323,3 +324,5 @@ forge-model:
     x: 0.5
     y: 0.5    # Đặt đáy model ngang mặt block
     z: 0.5
+  # Khoảng cách tối đa client render model 3D (block). Entity vẫn tồn tại.
+  view-range: 64.0

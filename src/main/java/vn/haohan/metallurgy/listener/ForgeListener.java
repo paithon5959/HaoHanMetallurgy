@@ -12,7 +12,6 @@ import vn.haohan.metallurgy.machine.forge.ForgeStructure;
 import org.bukkit.Location;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -328,7 +327,7 @@ public class ForgeListener implements Listener {
         }
 
         player.sendMessage("§8[§6Forge§8] §a✔ Kích hoạt Lò Rèn Cổ Đại thành công! Mô hình 3D đã được thiết lập.");
-        awardAdvancement(player, "haohan:metallurgy/root");
+        plugin.getProgressionManager().grant(player, "haohan:metallurgy/root");
         forge.playActivationEffects();
         plugin.getMachineManager().saveAll();
         plugin.getPluginLogger().info(
@@ -336,15 +335,6 @@ public class ForgeListener implements Listener {
 
         // Mở GUI ngay lập tức
         plugin.getGuiManager().open(player, new ForgeGui(plugin, forge));
-    }
-
-    private void awardAdvancement(Player player, String id) {
-        NamespacedKey key = NamespacedKey.fromString(id);
-        if (key == null) return;
-        var advancement = Bukkit.getAdvancement(key);
-        if (advancement == null) return;
-        var progress = player.getAdvancementProgress(advancement);
-        for (String criterion : progress.getRemainingCriteria()) progress.awardCriteria(criterion);
     }
 
     private void beginForgeMining(AncientForge forge, Block block, Player player) {

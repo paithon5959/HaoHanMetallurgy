@@ -1,0 +1,24 @@
+{
+  "display": {
+    "icon": {
+      "id": "minecraft:blast_furnace"
+    },
+    "title": {
+      "text": "Luyện Kim Gia",
+      "color": "gold"
+    },
+    "description": {
+      "text": "Kích hoạt Lò Rèn Cổ Đại và bắt đầu hành trình luyện kim.",
+      "color": "gray"
+    },
+    "background": "minecraft:block/metalurgy/stone",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "forge_built": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

@@ -37,7 +37,7 @@ dependencies {
 }
 
 tasks.named('processResources') {
-    filesMatching('plugin.yml') {
+    filesMatching(['plugin.yml', 'paper-plugin.yml']) {
         expand(project: [version: project.version])
     }
 }

@@ -33,29 +33,19 @@ HaoHan Metallurgy là plugin Minecraft dành cho HaoHan SMP. Plugin cung cấp h
 | Gson | Hỗ trợ xử lý dữ liệu JSON cho recipe và cấu hình. |
 | JUnit 5 | Viết và chạy unit test. |
 
-## Thành phần dự án
-
-| Thành phần | Mô tả |
-| --- | --- |
-| `HaoHanMetallurgy` | Plugin server, xử lý logic, GUI, công thức và dữ liệu máy. |
-| `HaoHanMetallurgy_Datapack` | Datapack chặn một số công thức vanilla, thêm advancement, loot table và tag liên quan. |
-| `HaoHanMetallurgy_Resourcepack` | Resource pack chứa texture và model cần thiết cho vật phẩm hoặc khối tùy chỉnh. |
-
 ## Yêu cầu
 
 - Minecraft server chạy Paper hoặc Purpur.
 - Java 21 trở lên.
 - Không cần cài Gradle riêng; dự án có sẵn Gradle Wrapper.
-- Datapack và resource pack đi kèm để hệ thống hoạt động đầy đủ.
+- Resource pack đi kèm nếu server dùng texture/model tùy chỉnh. Datapack không còn bắt buộc.
 
 ## Cài đặt
 
 1. Build hoặc tải file `.jar` của plugin.
 2. Copy file `.jar` vào thư mục `plugins/` của server.
-3. Copy thư mục hoặc file `.zip` của datapack vào `world/datapacks/`.
-4. Cài resource pack cho client hoặc cấu hình server để người chơi tải resource pack khi tham gia.
-5. Khởi động lại server.
-6. Chạy `/reload` nếu cần nạp lại datapack trong quá trình phát triển.
+3. Cài resource pack cho client hoặc cấu hình server để người chơi tải resource pack khi tham gia.
+4. Khởi động lại server.
 
 Sau lần chạy đầu tiên, plugin sẽ tạo file cấu hình tại `plugins/HaoHanMetallurgy/config.yml`.
 
@@ -153,7 +143,7 @@ Khi nâng từ cấu hình cũ lên `config-version: 4`, plugin tạo `config.be
 
 ## Ghi chú vận hành
 
-- Luôn cài plugin, datapack và resource pack cùng nhau để tránh thiếu recipe, texture hoặc dữ liệu progression.
+- Plugin tự quản lý recipe, khóa Netherite và dữ liệu progression; datapack chỉ còn là tùy chọn tương thích hiển thị advancement cũ.
 - HaoHanMetallurgy phụ thuộc `HaoHanItemCore` (bản 1.0.0). Cài `HaoHanItemCore.jar` trước khi cài plugin này.
 - Không nên chỉnh trực tiếp dữ liệu trong thư mục runtime của server nếu thay đổi có thể được quản lý từ mã nguồn.
-- Khi cập nhật datapack hoặc recipe trong môi trường đang chạy, kiểm tra lại bằng `/reload` và `/metallurgy reload`.
+- Khi cập nhật plugin hoặc recipe trong môi trường đang chạy, kiểm tra lại bằng `/metallurgy reload`.

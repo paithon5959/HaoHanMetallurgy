@@ -260,7 +260,7 @@ public abstract class Machine {
 
     public boolean hasRequiredAdditive(MetallurgyRecipe recipe) {
         // Flux is deliberately optional: without Borax the batch still runs at
-        // the configured 8% clean-output chance.
+        // the configured no-flux clean-output chance.
         return true;
     }
 
@@ -737,27 +737,7 @@ public abstract class Machine {
     }
 
     private void awardForgingAdvancement(MetallurgyRecipe recipe) {
-        if (recipeOperator == null || recipe == null) return;
-        String outputId = recipe.getOutput().customItemId();
-        if (outputId == null && recipe.getOutput().material() != null) {
-            outputId = recipe.getOutput().material().name().toLowerCase(java.util.Locale.ROOT);
-        }
-        String advancementId = switch (outputId == null ? "" : outputId) {
-            case "embersteel_ingot" -> "forge_embersteel_ingot";
-            case "mithril_ingot" -> "forge_mithril_ingot";
-            case "soulsteel_ingot" -> "forge_soulsteel_ingot";
-            case "netherite_ingot" -> "forge_netherite_ingot";
-            default -> null;
-        };
-        if (advancementId == null) return;
-
-        var player = Bukkit.getPlayer(recipeOperator);
-        var key = NamespacedKey.fromString("haohan:metallurgy/" + advancementId);
-        if (player == null || key == null) return;
-        var advancement = Bukkit.getAdvancement(key);
-        if (advancement == null) return;
-        var progress = player.getAdvancementProgress(advancement);
-        for (String criterion : progress.getRemainingCriteria()) progress.awardCriteria(criterion);
+        plugin.getProgressionManager().grantForRecipe(recipeOperator, recipe);
     }
 
     private double calculateFinalFailChance(MetallurgyRecipe recipe, int averageTemperature) {

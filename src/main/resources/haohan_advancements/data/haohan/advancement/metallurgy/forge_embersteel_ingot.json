@@ -1,0 +1,13 @@
+{
+  "display": {
+    "icon": { "id": "minecraft:iron_ingot" },
+    "title": { "text": "Tinh Luyện Trong Lửa", "color": "gold" },
+    "description": { "text": "Tinh luyện Embersteel Ingot đầu tiên.", "color": "gray" },
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "frame": "task"
+  },
+  "parent": "haohan:metallurgy/root",
+  "criteria": { "forged": { "trigger": "minecraft:impossible" } }
+}
