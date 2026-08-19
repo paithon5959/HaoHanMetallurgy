@@ -140,9 +140,8 @@ public class MetallurgyCommand implements CommandExecutor, TabCompleter {
     private boolean language(CommandSender sender, String[] args) {
         if (args.length != 2 || !lang().setLanguage(args[1])) return reply(sender, "language.usage");
         plugin.getCraftingRecipeManager().registerAll();
-        int refreshed = plugin.getItemManager().refreshAllLoadedItems();
         plugin.getPluginLogger().info("Language changed to " + lang().getLanguage()
-                + "; refreshed " + refreshed + " loaded custom item stack(s).");
+                + "; existing item stacks were left unchanged.");
         return reply(sender, "language.changed");
     }
 

@@ -43,7 +43,7 @@ public class CreativeMenuGui extends MetallurgyGui {
         currentPage = Math.max(0, Math.min(currentPage, pageCount - 1));
         int startIndex = currentPage * PAGE_SIZE;
         for (int slot = 0; slot < PAGE_SIZE && startIndex + slot < items.size(); slot++) {
-            inventory.setItem(slot, plugin.getItemManager().createItem(items.get(startIndex + slot), 1));
+            inventory.setItem(slot, plugin.getItemManager().createGuiItem(items.get(startIndex + slot), 1));
         }
 
         ItemStack pane = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);

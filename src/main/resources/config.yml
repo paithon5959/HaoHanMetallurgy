@@ -57,8 +57,7 @@ gui:
     enabled: true
     prefix: "\uE100"
     glyph: "\uE101"
-    # Dùng default font để tương thích với client Fabric/1.21.11.
-    font: "minecraft:default"
+    font: "haohan:gui"
   # Slot layout: xem GuiManager hoặc ForgeGui để biết ý nghĩa từng slot
   fuel-slot: 3          # Ô nhiên liệu 1
   fuel-slot-2: 2        # Ô nhiên liệu 2 (mới)

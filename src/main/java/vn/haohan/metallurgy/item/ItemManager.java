@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlotGroup;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockDataMeta;
 import org.bukkit.inventory.meta.Damageable;
@@ -48,7 +47,7 @@ public class ItemManager {
                 .create(MetallurgyItemRegistry.id(customItem), amount);
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
-            applyLocalizedPresentation(customItem, meta);
+            applyCanonicalPresentation(customItem, meta);
             // Keep Metallurgy's established CMD mappings. Definitions intentionally
             // omit CMD so ItemCore's validator does not invent an ItemCore model ID.
             if (customItem.getCustomModelData() > 0) {
@@ -66,15 +65,26 @@ public class ItemManager {
         return itemStack;
     }
 
-    /** Re-renders the item using the plugin's currently selected language. */
-    public ItemStack refreshLocalization(ItemStack itemStack) {
-        CustomItem customItem = getCustomItem(itemStack).orElse(null);
-        if (customItem == null) return itemStack;
+    /** Creates a localized display-only copy for a GUI. */
+    public ItemStack createGuiItem(CustomItem customItem, int amount) {
+        ItemStack itemStack = createItem(customItem, amount);
         ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) return itemStack;
-        applyLocalizedPresentation(customItem, meta);
-        itemStack.setItemMeta(meta);
+        if (meta != null) {
+            applyLocalizedPresentation(customItem, meta);
+            itemStack.setItemMeta(meta);
+        }
         return itemStack;
+    }
+
+    private void applyCanonicalPresentation(CustomItem customItem, ItemMeta meta) {
+        meta.displayName(Component.text(org.bukkit.ChatColor.stripColor(customItem.getDisplayName()))
+                .color(nameColor(customItem))
+                .decoration(TextDecoration.ITALIC, false));
+        meta.lore(java.util.stream.IntStream.range(0, customItem.getLore().size())
+                .mapToObj(index -> Component.text(org.bukkit.ChatColor.stripColor(customItem.getLore().get(index)))
+                        .color(index == 0 ? NamedTextColor.GRAY : NamedTextColor.DARK_GRAY)
+                        .decoration(TextDecoration.ITALIC, false))
+                .toList());
     }
 
     private void applyLocalizedPresentation(CustomItem customItem, ItemMeta meta) {
@@ -87,53 +97,6 @@ public class ItemManager {
                         .color(index == 0 ? NamedTextColor.GRAY : NamedTextColor.DARK_GRAY)
                         .decoration(TextDecoration.ITALIC, false))
                 .toList());
-    }
-
-    /** Refreshes every currently loaded custom item after a global language change. */
-    public int refreshAllLoadedItems() {
-        int refreshed = 0;
-        java.util.Set<Inventory> visited = java.util.Collections.newSetFromMap(
-                new java.util.IdentityHashMap<>());
-
-        for (var player : plugin.getServer().getOnlinePlayers()) {
-            refreshed += refreshInventory(player.getInventory(), visited);
-            refreshed += refreshInventory(player.getEnderChest(), visited);
-            refreshed += refreshInventory(player.getOpenInventory().getTopInventory(), visited);
-            ItemStack cursor = player.getItemOnCursor();
-            if (getCustomItem(cursor).isPresent()) {
-                player.setItemOnCursor(refreshLocalization(cursor));
-                refreshed++;
-            }
-        }
-        for (var machine : plugin.getMachineManager().getAll()) {
-            refreshed += refreshInventory(machine.getInventory(), visited);
-        }
-        for (var world : plugin.getServer().getWorlds()) {
-            for (org.bukkit.entity.Item entity : world.getEntitiesByClass(org.bukkit.entity.Item.class)) {
-                ItemStack stack = entity.getItemStack();
-                if (getCustomItem(stack).isEmpty()) continue;
-                entity.setItemStack(refreshLocalization(stack));
-                refreshed++;
-            }
-        }
-        return refreshed;
-    }
-
-    public int refreshInventoryLocalization(Inventory inventory) {
-        return refreshInventory(inventory, java.util.Collections.newSetFromMap(
-                new java.util.IdentityHashMap<>()));
-    }
-
-    private int refreshInventory(Inventory inventory, java.util.Set<Inventory> visited) {
-        if (inventory == null || !visited.add(inventory)) return 0;
-        int refreshed = 0;
-        for (int slot = 0; slot < inventory.getSize(); slot++) {
-            ItemStack stack = inventory.getItem(slot);
-            if (getCustomItem(stack).isEmpty()) continue;
-            inventory.setItem(slot, refreshLocalization(stack));
-            refreshed++;
-        }
-        return refreshed;
     }
 
     /**

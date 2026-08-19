@@ -11,7 +11,7 @@
       "text": "Kích hoạt Lò Rèn Cổ Đại và bắt đầu hành trình luyện kim.",
       "color": "gray"
     },
-    "background": "minecraft:block/metalurgy/stone",
+    "background": "minecraft:gui/advancements/backgrounds/stone",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false

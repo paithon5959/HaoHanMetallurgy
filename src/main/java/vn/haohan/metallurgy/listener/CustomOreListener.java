@@ -131,9 +131,8 @@ public final class CustomOreListener implements Listener {
             ItemStack item = inventory.getItem(slot);
             if (item == null) continue;
             ItemStack migrated = plugin.getItemManager().migrateCustomOreItem(item);
-            inventory.setItem(slot, plugin.getItemManager().refreshLocalization(migrated));
+            inventory.setItem(slot, migrated);
         }
-        plugin.getItemManager().refreshInventoryLocalization(event.getPlayer().getEnderChest());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
